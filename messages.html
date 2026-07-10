@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Messages — Smart Maternity Hospital</title>
+<style>
+:root{
+  --purple:#5732a3;--purple2:#7a5cc7;--lav:#f3effc;--pink:#ef6fa8;
+  --green:#4ca66a;--blue:#4d87d8;--gold:#d6a23b;--ink:#28243a;
+  --muted:#716b80;--line:#e7e1f2;--bg:#faf9fd;--card:#fff;
+  --shadow:0 12px 30px rgba(76,47,127,.09)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#fdfcff,#f7f4fc);color:var(--ink)}
+button,input,textarea,select{font:inherit}
+.app{min-height:100vh;display:grid;grid-template-columns:240px 1fr}
+.sidebar{background:#fff;border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;padding:3px 8px 12px}
+.logo{width:52px;height:52px;border-radius:16px;background:var(--lav);display:grid;place-items:center;color:var(--purple)}
+.logo svg{width:34px;height:34px}
+.brand h1{margin:0;color:var(--purple);font-size:17px;line-height:1.08}
+.tagline{font-size:12px;color:var(--purple2);font-style:italic;padding:0 8px}
+nav{display:grid;gap:6px}
+.nav-btn{border:0;background:transparent;border-radius:12px;padding:11px 12px;text-align:left;color:#504a61;display:flex;align-items:center;gap:11px;cursor:pointer}
+.nav-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9}
+.nav-btn:hover,.nav-btn.active{background:var(--lav);color:var(--purple);font-weight:700}
+.badge{margin-left:auto;background:var(--pink);color:#fff;border-radius:999px;padding:2px 7px;font-size:11px}
+.help{margin-top:auto;background:var(--lav);border:1px solid #ddd2f5;border-radius:16px;padding:14px}
+.help strong{color:var(--purple);display:block}
+.help p{font-size:12px;color:var(--muted)}
+.btn{border:1px solid #d8cdee;background:#fff;color:var(--purple);padding:9px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+.btn.primary{background:var(--purple);color:#fff;border-color:var(--purple)}
+main{padding:26px 30px 50px;max-width:1420px;width:100%;margin:auto}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.topbar h2{margin:0;color:var(--purple);font-size:27px}
+.topbar p{margin:5px 0 0;color:var(--muted)}
+.profile{display:flex;align-items:center;gap:12px}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#d7cbf3,#f2cadb);display:grid;place-items:center;color:var(--purple);font-weight:800}
+.icon-btn{width:40px;height:40px;border:1px solid var(--line);border-radius:12px;background:#fff;display:grid;place-items:center;cursor:pointer}
+.icon-btn svg{width:20px;height:20px;stroke:var(--purple);fill:none;stroke-width:1.8}
+.page{display:none}.page.active{display:block}
+.hero,.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.hero{padding:22px;margin-bottom:18px}
+.hero-row{display:flex;justify-content:space-between;gap:18px}
+.hero h3,.panel h3{margin:0;color:var(--purple)}
+.hero p,.panel p{color:var(--muted)}
+.journey{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:23px;position:relative}
+.journey:before{content:"";height:3px;background:#e5def3;position:absolute;left:7%;right:7%;top:22px}
+.step{position:relative;z-index:1;text-align:center}
+.dot{width:46px;height:46px;border-radius:50%;background:#fff;border:3px solid #ded6ef;margin:auto;display:grid;place-items:center;color:#a8a3b2;font-weight:800}
+.step.done .dot,.step.current .dot{border-color:var(--purple);color:var(--purple);background:var(--lav)}
+.step.current .dot{box-shadow:0 0 0 6px rgba(87,50,163,.08)}
+.step span{font-size:11px;display:block;margin-top:8px;color:#5c5668}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{padding:18px;display:flex;flex-direction:column;min-height:190px}
+.card-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.tile-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center}
+.tile-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8}
+.purple{background:var(--lav);color:var(--purple)}.pink{background:#fff0f6;color:var(--pink)}
+.green{background:#eef8f1;color:var(--green)}.blue{background:#edf5ff;color:var(--blue)}.gold{background:#fff7e5;color:var(--gold)}
+.card h4{margin:0;color:var(--purple);font-size:17px}.card p,.card li{font-size:13px;color:#575165;line-height:1.45}
+.card ul{padding-left:18px;margin:3px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.progress{height:8px;background:#f0e9f2;border-radius:999px;overflow:hidden;margin-top:8px}.progress span{display:block;height:100%;width:60%;background:linear-gradient(90deg,var(--pink),#f3a3c3)}
+.panel{padding:22px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+.back{display:inline-flex;align-items:center;gap:7px;margin-bottom:14px;background:none;border:0;color:var(--purple);font-weight:800;cursor:pointer}
+.back svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.detail-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
+.info-box{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+.info-box h4{margin:0 0 10px;color:var(--purple)}
+.meta{display:grid;grid-template-columns:130px 1fr;gap:8px;font-size:14px}.meta div:nth-child(odd){color:var(--muted)}
+.message-list{display:grid;gap:10px}.message{border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;background:#fff}
+.message:hover{border-color:#cdbcf0}.message.unread{border-left:5px solid var(--pink)}
+.message h4{margin:0 0 5px;color:var(--purple)}.message p{margin:0;color:var(--muted);font-size:13px}
+.thread{display:grid;gap:10px}.bubble{max-width:78%;padding:12px 14px;border-radius:14px;font-size:14px;line-height:1.45}
+.bubble.them{background:var(--lav)}.bubble.me{background:var(--purple);color:#fff;margin-left:auto}
+.input-row{display:flex;gap:8px;margin-top:14px}.input-row textarea{flex:1;resize:vertical;min-height:44px;border:1px solid var(--line);border-radius:10px;padding:10px}
+.result-row{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid var(--line)}
+.status-ok{color:var(--green);font-weight:800}.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.resource{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fff}.resource h4{color:var(--purple);margin:0 0 7px}
+.checklist{display:grid;gap:10px}.check{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px}
+.check input{margin-top:3px}.support-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.service{border:1px solid var(--line);border-radius:14px;padding:15px;background:#fff}.service h4{margin:0 0 5px;color:var(--purple)}
+.footer{margin-top:18px;background:linear-gradient(90deg,#f6f1ff,#fff);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center}
+.toast{position:fixed;right:24px;bottom:24px;background:#28243a;color:#fff;padding:13px 16px;border-radius:12px;opacity:0;transform:translateY(14px);transition:.2s}
+.toast.show{opacity:1;transform:none}
+@media(max-width:1000px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}nav{grid-template-columns:repeat(3,1fr)}.help{display:none}}
+@media(max-width:780px){main{padding:18px}.grid{grid-template-columns:1fr}.journey{grid-template-columns:repeat(3,1fr);row-gap:20px}.journey:before{display:none}.detail-grid,.resource-grid,.support-grid{grid-template-columns:1fr}nav{grid-template-columns:1fr 1fr}.topbar h2{font-size:22px}.footer{align-items:flex-start;gap:12px;flex-direction:column}}
+
+
+a{text-decoration:none;color:inherit}
+a.btn{display:inline-flex;align-items:center;justify-content:center}
+.nav-link{border:0;background:transparent;border-radius:12px;padding:11px 12px;text-align:left;color:#504a61;display:flex;align-items:center;gap:11px;cursor:pointer}
+.nav-link svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9}
+.nav-link:hover,.nav-link.active{background:var(--lav);color:var(--purple);font-weight:700}
+.notice{margin-top:14px;padding:12px 14px;border-radius:12px;background:#edf8f1;color:#2e6f45;display:none}
+.notice.show{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div>
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11Z"/><path d="M9.5 11.5c1.5-1.4 3.6-1 4.5.5"/></svg>
+      </div>
+      <h1>SMART<br>MATERNITY<br>HOSPITAL</h1>
+    </div>
+    <div class="tagline">Caring for you, every step of the way</div>
+  </div>
+  <nav>
+    <a class="nav-link " href="index.html"><svg viewBox="0 0 24 24"><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>Home</a>
+    <a class="nav-link" href="index.html#journey"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-2 5-5 2 2-5 5-2Z"/></svg>My Journey</a>
+    <a class="nav-link " href="appointment.html"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>Appointments</a>
+    <a class="nav-link active" href="messages.html"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5Z"/></svg>Messages<span class="badge">2</span></a>
+    <a class="nav-link" href="index.html#results"><svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v5l-5 9a3 3 0 0 0 2.6 4h8.8A3 3 0 0 0 19 17l-5-9V3"/><path d="M8 14h8"/></svg>Test Results</a>
+    <a class="nav-link" href="index.html#resources"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22V5.5ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22V5.5Z"/></svg>Education</a>
+    <a class="nav-link" href="index.html#birthplan"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 6.5-7 11-7 11Z"/></svg>My Birth Plan</a>
+    <a class="nav-link" href="index.html#support"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c0-4 2-6 5-6s5 2 5 6M13 20c.2-3 1.8-4.5 4-4.5S21 17 21 20"/></svg>Support Services</a>
+  </nav>
+  <div class="help"><strong>Need help?</strong><p>Our maternity support team is here for you.</p><a class="btn" href="messages.html">Contact Us</a></div>
+</aside>
+
+<main>
+
+<header class="topbar">
+  <div><h2>Messages</h2><p>Secure communication with your care team</p></div>
+  <div class="profile">
+    <a class="icon-btn" href="messages.html"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></a>
+    <div class="avatar">SM</div>
+  </div>
+</header>
+
+
+<a class="back" href="index.html"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>Back to dashboard</a>
+<div class="panel">
+  <h3>Messages</h3>
+  <p>Secure communication with your care team.</p>
+  <div class="message-list">
+    <a class="message unread" href="thread.html">
+      <h4>Midwife Team</h4><p>Your appointment reminder · 2 hours ago</p>
+    </a>
+    <a class="message unread" href="thread.html">
+      <h4>Public Health Nurse</h4><p>Breastfeeding support group · 1 day ago</p>
+    </a>
+    <a class="message" href="thread.html">
+      <h4>Maternity Administration</h4><p>Your registration documents have been received · 3 days ago</p>
+    </a>
+  </div>
+</div>
+
+</main>
+</div>
+
+</body>
+</html>
